@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korea GeoGuessr - Results</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY" defer></script>
+    <script src="js/animations-init.js"></script>
+</head>
+<body>
+    <div class="container page" id="results-page">
+        <header class="header">
+            <div class="logo">
+                <h1>Game Results</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="leaderboard.html">Leaderboard</a></li>
+                    <li><a href="tutorial.html">How to Play</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="results-summary">
+                <h2>Game Summary</h2>
+                <div class="final-score">
+                    <div class="score-circle">
+                        <span id="total-score">0</span>
+                        <p>points</p>
+                    </div>
+                </div>
+                <div class="player-info">
+                    <p>Player: <span id="player-name">Guest</span></p>
+                    <p>Date: <span id="game-date"></span></p>
+                </div>
+            </section>
+
+            <section class="round-breakdown">
+                <h3>Round Breakdown</h3>
+                <div class="rounds-container">
+                </div>
+            </section>
+
+            <section class="results-map">
+                <h3>Game Map Overview</h3>
+                <div id="results-map-container"></div>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <span class="legend-color actual"></span> Actual Locations
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color guess"></span> Your Guesses
+                    </div>
+                </div>
+            </section>
+
+            <section class="action-buttons">
+                <button id="save-score" class="btn btn-primary">Save Score</button>
+                <button id="play-again" class="btn btn-secondary">Play Again</button>
+                <a href="leaderboard.html" class="btn btn-secondary">View Leaderboard</a>
+            </section>
+        </main>
+
+        <div id="save-score-modal" class="modal">
+            <div class="modal-content">
+                <h2>Score Saved!</h2>
+                <p>Your score has been added to the leaderboard.</p>
+                <p>Rank: <span id="player-rank">#1</span></p>
+                <button id="close-modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; Computer Science Final Project by Isabelle Sohn.</p>
+        </footer>
+    </div>
+
+    <script src="js/results.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        $(document).ready(function() {
+            const gameResults = JSON.parse(localStorage.getItem('gameResults')) || {
+                totalScore: 0,
+                rounds: [],
+                playerName: 'Guest'
+            };
+            
+            $('#total-score').text(gameResults.totalScore);
+            $('#player-name').text(gameResults.playerName);
+            $('#game-date').text(new Date().toLocaleDateString());
+            
+            const roundsContainer = $('.rounds-container');
+            gameResults.rounds.forEach((round, index) => {
+                const roundElement = $(`
+                    <div class="round-item">
+                        <div class="round-header">
+                            <h4>Round ${index + 1}</h4>
+                            <span class="round-score">${round.score} points</span>
+                        </div>
+                        <div class="round-details">
+                            <p>Distance: ${round.distance} km</p>
+                            <p>Time: ${round.time}</p>
+                        </div>
+                    </div>
+                `);
+                roundsContainer.append(roundElement);
+            });
+            
+            function initResultsMap() {
+                const map = new google.maps.Map(document.getElementById('results-map-container'), {
+                    center: { lat: 36.5, lng: 127.5 },
+                    zoom: 7,
+                    restriction: {
+                        latLngBounds: {
+                            north: 38.7,
+                            south: 33.0,
+                            east: 131.9,
+                            west: 124.5
+                        }
+                    }
+                });
+                
+                gameResults.rounds.forEach((round, index) => {
+                    new google.maps.Marker({
+                        position: round.actualLocation,
+                        map: map,
+                        title: `Round ${index + 1} - Actual`,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            fillColor: '#4CAF50',
+                            fillOpacity: 1,
+                            strokeWeight: 1,
+                            scale: 7
+                        }
+                    });
+                    
+                    new google.maps.Marker({
+                        position: round.guessLocation,
+                        map: map,
+                        title: `Round ${index + 1} - Guess`,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            fillColor: '#F44336',
+                            fillOpacity: 1,
+                            strokeWeight: 1,
+                            scale: 7
+                        }
+                    });
+                    
+                    new google.maps.Polyline({
+                        path: [round.actualLocation, round.guessLocation],
+                        geodesic: true,
+                        strokeColor: '#FF5722',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        map: map
+                    });
+                });
+            }
+            
+            if (typeof google !== 'undefined') {
+                initResultsMap();
+            } else {
+                window.initMap = initResultsMap;
+            }
+            
+            $('#save-score').click(function() {
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        const db = firebase.firestore();
+                        db.collection('scores').add({
+                            userId: user.uid,
+                            playerName: user.displayName || user.email,
+                            score: gameResults.totalScore,
+                            date: new Date(),
+                            rounds: gameResults.rounds
+                        })
+                        .then(function() {
+                            return db.collection('scores')
+                                    .orderBy('score', 'desc')
+                                    .get();
+                        })
+                        .then(function(querySnapshot) {
+                            let rank = 1;
+                            querySnapshot.forEach(function(doc) {
+                                if (doc.data().userId === user.uid && 
+                                    doc.data().score === gameResults.totalScore) {
+                                    $('#player-rank').text(`#${rank}`);
+                                    return;
+                                }
+                                rank++;
+                            });
+                            
+                            $('#save-score-modal').fadeIn();
+                        })
+                        .catch(function(error) {
+                            alert("Error saving score: " + error.message);
+                        });
+                    } else {
+                        alert("Please login to save your score.");
+                        window.location.href = "index.html";
+                    }
+                });
+            });
+            
+            $('#close-modal').click(function() {
+                $('#save-score-modal').fadeOut();
+            });
+            
+            $('#play-again').click(function() {
+                window.location.href = "game.html";
+            });
+            
+            $('.container').addClass('fade-in');
+            $('.round-item').addClass('slide-in');
+        });
+    </script>
+</body>
+</html>

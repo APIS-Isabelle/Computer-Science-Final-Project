@@ -1,0 +1,282 @@
+[
+    {
+        "id": "loc1",
+        "name": "Gyeongbokgung Palace",
+        "lat": 37.5796,
+        "lng": 126.9770,
+        "images": [
+            "assets/images/locations/gyeongbokgung1.jpg",
+            "assets/images/locations/gyeongbokgung2.jpg",
+            "assets/images/locations/gyeongbokgung3.jpg"
+        ],
+        "hint": "A major royal palace in Seoul",
+        "description": "Gyeongbokgung, also known as Gyeongbok Palace, was the main royal palace of the Joseon dynasty. Built in 1395, it is located in northern Seoul.",
+        "difficulty": "Easy"
+    },
+    {
+        "id": "loc2",
+        "name": "Namsan Tower",
+        "lat": 37.5512,
+        "lng": 126.9882,
+        "images": [
+            "assets/images/locations/namsan1.jpg",
+            "assets/images/locations/namsan2.jpg",
+            "assets/images/locations/namsan3.jpg"
+        ],
+        "hint": "A communication and observation tower in central Seoul",
+        "description": "N Seoul Tower, officially the YTN Seoul Tower and commonly known as Namsan Tower, is a communication and observation tower located on Namsan Mountain in central Seoul.",
+        "difficulty": "Easy"
+    },
+    {
+        "id": "loc3",
+        "name": "Haeundae Beach",
+        "lat": 35.1588,
+        "lng": 129.1600,
+        "images": [
+            "assets/images/locations/haeundae1.jpg",
+            "assets/images/locations/haeundae2.jpg",
+            "assets/images/locations/haeundae3.jpg"
+        ],
+        "hint": "A popular beach in Busan",
+        "description": "Haeundae Beach is a popular beach in Busan, South Korea. It is one of the most famous beaches in Korea and is known for its white sand.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc4",
+        "name": "Seongsan Ilchulbong",
+        "lat": 33.4587,
+        "lng": 126.9427,
+        "images": [
+            "assets/images/locations/seongsan1.jpg",
+            "assets/images/locations/seongsan2.jpg",
+            "assets/images/locations/seongsan3.jpg"
+        ],
+        "hint": "A volcanic crater on Jeju Island",
+        "description": "Seongsan Ilchulbong, also called 'Sunrise Peak', is an archetypal tuff cone formed by hydrovolcanic eruptions upon a shallow seabed about 5,000 years ago on Jeju Island.",
+        "difficulty": "Hard"
+    },
+    {
+        "id": "loc5",
+        "name": "Bulguksa Temple",
+        "lat": 35.7900,
+        "lng": 129.3317,
+        "images": [
+            "assets/images/locations/bulguksa1.jpg",
+            "assets/images/locations/bulguksa2.jpg",
+            "assets/images/locations/bulguksa3.jpg"
+        ],
+        "hint": "A Buddhist temple in Gyeongju",
+        "description": "Bulguksa is a Buddhist temple located on the slopes of Mount Toham in Gyeongju, South Korea. It was built in the 8th century during the Silla dynasty.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc6",
+        "name": "Myeongdong Shopping District",
+        "lat": 37.5635,
+        "lng": 126.9830,
+        "images": [
+            "assets/images/locations/myeongdong1.jpg",
+            "assets/images/locations/myeongdong2.jpg",
+            "assets/images/locations/myeongdong3.jpg"
+        ],
+        "hint": "A major shopping area in Seoul",
+        "description": "Myeongdong is a shopping district in Seoul, South Korea. It is known for its fashion stores, beauty brands, and street food.",
+        "difficulty": "Easy"
+    },
+    {
+        "id": "loc7",
+        "name": "Seoraksan Mountain",
+        "lat": 38.1193,
+        "lng": 128.4659,
+        "images": [
+            "assets/images/locations/seoraksan1.jpg",
+            "assets/images/locations/seoraksan2.jpg",
+            "assets/images/locations/seoraksan3.jpg"
+        ],
+        "hint": "A mountain in the northeast of South Korea",
+        "description": "Seoraksan is the highest mountain in the Taebaek mountain range in the Gangwon Province in eastern South Korea. It's part of Seoraksan National Park.",
+        "difficulty": "Hard"
+    },
+    {
+        "id": "loc8",
+        "name": "Hongdae Area",
+        "lat": 37.5558,
+        "lng": 126.9368,
+        "images": [
+            "assets/images/locations/hongdae1.jpg",
+            "assets/images/locations/hongdae2.jpg",
+            "assets/images/locations/hongdae3.jpg"
+        ],
+        "hint": "A vibrant university area known for arts and nightlife",
+        "description": "Hongdae is an area in Seoul, South Korea near Hongik University, known for its urban arts scene, indie music culture, entertainment, and nightlife.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc9",
+        "name": "Gamcheon Culture Village",
+        "lat": 35.0946,
+        "lng": 129.0111,
+        "images": [
+            "assets/images/locations/gamcheon1.jpg",
+            "assets/images/locations/gamcheon2.jpg",
+            "assets/images/locations/gamcheon3.jpg"
+        ],
+        "hint": "A colorful village built on a hillside in Busan",
+        "description": "Gamcheon Culture Village is a hillside community in Busan, South Korea known for its colorful houses, narrow alleys, and art installations.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc10",
+        "name": "Hanok Village",
+        "lat": 35.8173,
+        "lng": 127.1488,
+        "images": [
+            "assets/images/locations/hanok1.jpg",
+            "assets/images/locations/hanok2.jpg",
+            "assets/images/locations/hanok3.jpg"
+        ],
+        "hint": "A traditional Korean village in Jeonju",
+        "description": "Jeonju Hanok Village is a traditional Korean village located in Jeonju, South Korea, featuring over 800 traditional Korean houses called 'hanok'.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc11",
+        "name": "Changdeokgung Palace",
+        "lat": 37.5828,
+        "lng": 126.9914,
+        "images": [
+            "assets/images/locations/changdeokgung1.jpg",
+            "assets/images/locations/changdeokgung2.jpg",
+            "assets/images/locations/changdeokgung3.jpg"
+        ],
+        "hint": "A UNESCO World Heritage palace in Seoul",
+        "description": "Changdeokgung Palace is a UNESCO World Heritage Site located in Seoul. It was the second royal villa built following the construction of Gyeongbokgung Palace.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc12",
+        "name": "Busan Tower",
+        "lat": 35.1006,
+        "lng": 129.0322,
+        "images": [
+            "assets/images/locations/busantower1.jpg",
+            "assets/images/locations/busantower2.jpg",
+            "assets/images/locations/busantower3.jpg"
+        ],
+        "hint": "An observation tower in Busan",
+        "description": "Busan Tower is a 120-meter-high observation tower located in Yongdusan Park, Busan, South Korea.",
+        "difficulty": "Easy"
+    },
+    {
+        "id": "loc13",
+        "name": "Hallasan Mountain",
+        "lat": 33.3617,
+        "lng": 126.5292,
+        "images": [
+            "assets/images/locations/hallasan1.jpg",
+            "assets/images/locations/hallasan2.jpg",
+            "assets/images/locations/hallasan3.jpg"
+        ],
+        "hint": "The highest mountain in South Korea, located on Jeju Island",
+        "description": "Hallasan is a shield volcano on Jeju Island of South Korea. It is the highest mountain in South Korea and is often covered in snow in winter.",
+        "difficulty": "Hard"
+    },
+    {
+        "id": "loc14",
+        "name": "Gwanghwamun Square",
+        "lat": 37.5759,
+        "lng": 126.9769,
+        "images": [
+            "assets/images/locations/gwanghwamun1.jpg",
+            "assets/images/locations/gwanghwamun2.jpg",
+            "assets/images/locations/gwanghwamun3.jpg"
+        ],
+        "hint": "A public square in Seoul with a statue of King Sejong",
+        "description": "Gwanghwamun Square is a public open space on Sejongno, Jongno-gu, Seoul. The square features statues of King Sejong the Great and Admiral Yi Sun-sin.",
+        "difficulty": "Easy"
+    },
+    {
+        "id": "loc15",
+        "name": "Bukchon Hanok Village",
+        "lat": 37.5823,
+        "lng": 126.9854,
+        "images": [
+            "assets/images/locations/bukchon1.jpg",
+            "assets/images/locations/bukchon2.jpg",
+            "assets/images/locations/bukchon3.jpg"
+        ],
+        "hint": "A traditional village in Seoul between two palaces",
+        "description": "Bukchon Hanok Village is a Korean traditional village located between Gyeongbokgung Palace, Changdeokgung Palace and Jongmyo Shrine in Seoul.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc16",
+        "name": "Gyeongju Historic Areas",
+        "lat": 35.8356,
+        "lng": 129.2253,
+        "images": [
+            "assets/images/locations/gyeongju1.jpg",
+            "assets/images/locations/gyeongju2.jpg",
+            "assets/images/locations/gyeongju3.jpg"
+        ],
+        "hint": "An ancient capital with many historical sites",
+        "description": "Gyeongju Historic Areas are the areas containing archaeological sites, Buddhist temples, and various artifacts of the Silla Kingdom in Gyeongju, South Korea.",
+        "difficulty": "Hard"
+    },
+    {
+        "id": "loc17",
+        "name": "Dongdaemun Design Plaza",
+        "lat": 37.5668,
+        "lng": 127.0093,
+        "images": [
+            "assets/images/locations/ddp1.jpg",
+            "assets/images/locations/ddp2.jpg",
+            "assets/images/locations/ddp3.jpg"
+        ],
+        "hint": "A major urban development landmark in Seoul",
+        "description": "Dongdaemun Design Plaza (DDP) is a major urban development landmark in Seoul designed by Zaha Hadid. The venue features innovative design and architecture.",
+        "difficulty": "Easy"
+    },
+    {
+        "id": "loc18",
+        "name": "Insadong",
+        "lat": 37.5741,
+        "lng": 126.9870,
+        "images": [
+            "assets/images/locations/insadong1.jpg",
+            "assets/images/locations/insadong2.jpg",
+            "assets/images/locations/insadong3.jpg"
+        ],
+        "hint": "A traditional arts and crafts shopping area in Seoul",
+        "description": "Insadong is a dong, or neighborhood, in the Jongno-gu district of Seoul, South Korea. It is famous for its traditional crafts shops, art galleries, and tea houses.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc19",
+        "name": "War Memorial of Korea",
+        "lat": 37.5359,
+        "lng": 126.9769,
+        "images": [
+            "assets/images/locations/warmemorial1.jpg",
+            "assets/images/locations/warmemorial2.jpg",
+            "assets/images/locations/warmemorial3.jpg"
+        ],
+        "hint": "A museum and memorial hall in Seoul",
+        "description": "The War Memorial of Korea is a museum located in Yongsan-dong, Seoul. It opened in 1994 on the site where the Korean Infantry headquarters used to be.",
+        "difficulty": "Medium"
+    },
+    {
+        "id": "loc20",
+        "name": "Jagalchi Market",
+        "lat": 35.0966,
+        "lng": 129.0306,
+        "images": [
+            "assets/images/locations/jagalchi1.jpg",
+            "assets/images/locations/jagalchi2.jpg",
+            "assets/images/locations/jagalchi3.jpg"
+        ],
+        "hint": "A famous fish market in Busan",
+        "description": "Jagalchi Market is Korea's largest seafood market, located in Nampo-dong, Busan. It is a famous tourist destination known for its fresh seafood and vibrant atmosphere.",
+        "difficulty": "Medium"
+    }
+]

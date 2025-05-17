@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korea GeoGuessr - Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALEj6ihF26ntD1HURbfvZPsv3iROg4D64&callback=initMap" defer></script>
+    <script src="js/animations-init.js"></script>
+</head>
+<body>
+    <div class="container game-container page" id="game-page">
+        <header class="game-header">
+            <div class="logo-small">
+                <h2>Korea GeoGuessr</h2>
+            </div>
+            <div class="game-info">
+                <div class="round-info">
+                    Round: <span id="current-round">1</span>/5
+                </div>
+                <div class="score-info">
+                    Score: <span id="current-score">0</span>
+                </div>
+                <div class="timer">
+                    Time: <span id="timer-display">02:00</span>
+                </div>
+            </div>
+            <div class="game-controls">
+                <button id="exit-game" class="btn btn-small">Exit Game</button>
+            </div>
+        </header>
+
+        <main class="game-content">
+            <div class="location-view">
+                <div id="location-image-container">
+                    <img id="location-image" src="" alt="Location in Korea">
+                    <div class="location-controls">
+                        <button id="prev-image" class="navigation-btn">&lt;</button>
+                        <button id="next-image" class="navigation-btn">&gt;</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-section">
+                <div id="map"></div>
+                <div class="guess-controls">
+                    <button id="make-guess" class="btn btn-primary" disabled>Make Guess</button>
+                    <button id="reset-pin" class="btn btn-secondary" disabled>Reset Pin</button>
+                </div>
+            </div>
+        </main>
+
+        <div id="guess-result" class="modal">
+            <div class="modal-content">
+                <h2>Round Result</h2>
+                <div id="result-details">
+                    <p>Your guess was <span id="distance">0</span> km away from the actual location.</p>
+                    <p>You earned <span id="points">0</span> points!</p>
+                </div>
+                <div id="result-map"></div>
+                <button id="next-round" class="btn btn-primary">Next Round</button>
+            </div>
+
+<div id="distance-viz" class="distance-visualization" style="display: none;">
+    <h3>How Far Off Was Your Guess?</h3>
+    <div class="distance-scale">
+        <div class="distance-marker perfect">0 km</div>
+        <div class="distance-marker good">5 km</div>
+        <div class="distance-marker okay">10 km</div>
+        <div class="distance-marker far">50 km</div>
+        <div class="distance-marker very-far">100+ km</div>
+    </div>
+    <div class="distance-bar">
+        <div class="distance-indicator"></div>
+    </div>
+    <div class="distance-accuracy"></div>
+</div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korea GeoGuessr - Leaderboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-rankings.js"></script>
+    <script src="js/animations-init.js"></script>
+</head>
+<body>
+    <div class="container page" id="leaderboard-page">
+        <header class="header">
+            <div class="logo">
+                <h1>Leaderboard</h1>
+                <p>Top players from around the world</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+                    <li><a href="tutorial.html">How to Play</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="user-stats-container" style="display: none;" class="user-stats">
+            </section>
+
+            <section class="leaderboard-table">
+                <h2>Global Rankings</h2>
+                <p class="leaderboard-description">Showing each player's best score</p>
+                <table id="scores-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="loading-row">
+                            <td colspan="4">Loading leaderboard data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="leaderboard-stats">
+                <div class="stat-card">
+                    <h3>Global Average</h3>
+                    <p id="global-average">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Players</h3>
+                    <p id="total-players">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Your Best Rank</h3>
+                    <p id="your-best-rank">--</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; Computer Science Final Project by Isabelle Sohn.</p>
+        </footer>
+    </div>
+
+    <div id="score-details-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Score Details</h2>
+            <div id="score-details-content">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.container').addClass('fade-in');
+            
+            let currentUserId = null;
+            let currentUserName = null;
+            
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    currentUserId = user.uid;
+                    currentUserName = user.displayName || user.email;
+                    loadUserStats(currentUserId);
+                } else {
+                    const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    if (storedUser.uid) {
+                        currentUserId = storedUser.uid;
+                        currentUserName = storedUser.displayName || 'Guest';
+                    }
+                }
+                
+                loadLeaderboard();
+            });
+            
+            function loadUserStats(userId) {
+                firebase.firestore().collection('users').doc(userId).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            $('#user-stats-container').html(`
+                                <div class="stat-card user-stat-card">
+                                    <h3>Your Statistics</h3>
+                                    <p>Best Score: <strong>${userData.bestScore || 0}</strong></p>
+                                    <p>Games Played: <strong>${userData.gamesPlayed || 0}</strong></p>
+                                    <p>Last Played: <strong>${userData.lastPlayed ? new Date(userData.lastPlayed.toDate()).toLocaleDateString() : 'Never'}</strong></p>
+                                </div>
+                            `).show();
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error loading user stats:', error);
+                    });
+            }
+            
+            function loadLeaderboard() {
+                const tbody = $('#scores-table tbody');
+                tbody.html('<tr class="loading-row"><td colspan="4">Loading leaderboard data...</td></tr>');
+                
+                window.firebaseRankings.getLeaderboard('all-time')
+                    .then(function(scores) {
+                        displayLeaderboard(scores);
+                    })
+                    .catch(function(error) {
+                        console.error('Error loading leaderboard:', error);
+                        tbody.html(`<tr><td colspan="4">Error loading leaderboard: ${error}</td></tr>`);
+                    });
+            }
+            
+            function displayLeaderboard(scores) {
+                const tbody = $('#scores-table tbody');
+                
+                if (scores.length === 0) {
+                    tbody.html('<tr><td colspan="4">No scores found.</td></tr>');
+                    resetStats();
+                    return;
+                }
+                
+                tbody.empty();
+                let totalScore = 0;
+                let userBestRank = '-';
+                
+                scores.forEach(function(score, index) {
+                    const rank = index + 1;
+                    const isCurrentUser = score.userId === currentUserId;
+                    const date = score.timestamp ? new Date(score.timestamp.seconds * 1000) : new Date();
+                    
+                    const formattedDate = date.toLocaleDateString();
+                    
+                    const row = $(`
+                        <tr ${isCurrentUser ? 'class="current-user"' : ''} data-score-id="${score.id}">
+                            <td>${rank}</td>
+                            <td>${score.playerName}${score.isGuest ? ' (Guest)' : ''}</td>
+                            <td>${score.score}</td>
+                            <td>${formattedDate}</td>
+                        </tr>
+                    `);
+                    
+                    row.on('click', function() {
+                        showScoreDetails(score);
+                    });
+                    
+                    tbody.append(row);
+                    totalScore += score.score;
+                    
+                    if (isCurrentUser && (userBestRank === '-' || rank < userBestRank)) {
+                        userBestRank = rank;
+                    }
+                });
+                
+                $('#global-average').text(Math.round(totalScore / scores.length));
+                $('#total-players').text(scores.length);
+                $('#your-best-rank').text(userBestRank);
+                
+                animateRows();
+            }
+            
+            function showScoreDetails(score) {
+                const modal = $('#score-details-modal');
+                const content = $('#score-details-content');
+                
+                const date = score.timestamp ? new Date(score.timestamp.seconds * 1000) : new Date();
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                
+                let html = `
+                    <div class="player-info">
+                        <p>Player: <strong>${score.playerName || currentUserName}</strong></p>
+                        <p>Total Score: <strong>${score.score}</strong></p>
+                        <p>Date: <strong>${formattedDate}</strong></p>
+                    </div>
+                    <h3>Rounds</h3>
+                `;
+                
+                if (score.rounds && score.rounds.length > 0) {
+                    html += '<div class="rounds-grid">';
+                    
+                    score.rounds.forEach(function(round, index) {
+                        html += `
+                            <div class="round-detail">
+                                <h4>Round ${index + 1}</h4>
+                                <p>Location: ${round.locationName}</p>
+                                <p>Distance: ${round.distance} km</p>
+                                <p>Points: ${round.points}</p>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                } else {
+                    html += '<p>No round details available.</p>';
+                }
+                
+                content.html(html);
+                modal.fadeIn(300);
+                
+                $('.close-modal').on('click', function() {
+                    modal.fadeOut(300);
+                });
+                
+                $(window).on('click', function(event) {
+                    if ($(event.target).is(modal)) {
+                        modal.fadeOut(300);
+                    }
+                });
+            }
+            
+            function resetStats() {
+                $('#global-average').text('0');
+                $('#total-players').text('0');
+                $('#your-best-rank').text('-');
+            }
+            
+            function animateRows() {
+                $('#scores-table tbody tr').each(function(index) {
+                    const row = $(this);
+                    row.css('opacity', 0);
+                    
+                    setTimeout(function() {
+                        row.animate({ opacity: 1 }, 300);
+                    }, index * 50);
+                });
+            }
+        });
+    </script>
+
+    <style>
+        .leaderboard-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .leaderboard-table h2 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        #scores-table tbody tr.current-user {
+            background-color: #fff4e5;
+            font-weight: bold;
+        }
+        
+        #scores-table tbody tr:hover {
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+        
+        .user-stat-card {
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .user-stat-card h3 {
+            color: var(--primary-color);
+        }
+        
+        .rounds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .round-detail {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        
+        .round-detail h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</body>
+</html>
